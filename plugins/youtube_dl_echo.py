@@ -26,7 +26,7 @@ from translation import Translation
 import pyrogram
 logging.getLogger("pyrogram").setLevel(logging.WARNING)
 
-from helper_funcs.chat_base import TRChatBase
+#from helper_funcs.chat_base import TRChatBase
 from helper_funcs.display_progress import humanbytes
 from helper_funcs.help_uploadbot import DownLoadFile
 
@@ -41,7 +41,7 @@ async def echo(bot, update):
         )
         return
     # logger.info(update)
-    TRChatBase(update.from_user.id, update.text, "/echo")
+#    TRChatBase(update.from_user.id, update.text, "/echo")
     # await bot.send_chat_action(
     #     chat_id=update.chat.id,
     #     action="typing"
