@@ -15,6 +15,8 @@ import os
 import shutil
 import time
 from datetime import datetime
+from urllib3 import PoolManager
+
 
 # the secret configuration specific things
 if bool(os.environ.get("WEBHOOK", False)):
@@ -60,6 +62,18 @@ async def youtube_dl_call_back(bot, update):
         "_" + youtube_dl_format + "." + youtube_dl_ext
     youtube_dl_username = None
     youtube_dl_password = None
+    url = youtube_dl_url
+    pool = PoolManager()
+    response = pool.request("GET", url, preload_content=False)
+    total_length = int(response.headers.get("Content-Length"))
+    file_size = Config.TG_MAX_FILE_SIZE + 1
+    if total_length > file_size:
+        await bot.edit_message_text(
+        chat_id=update.message.chat.id,
+        text=Translation.RCHD_TG_API_LIMIT.format(humanbytes(total_length)),
+        message_id=update.message.message_id
+        )
+        return
     if "|" in youtube_dl_url:
         url_parts = youtube_dl_url.split("|")
         if len(url_parts) == 2:

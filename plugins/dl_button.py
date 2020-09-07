@@ -16,6 +16,7 @@ import os
 import shutil
 import time
 from datetime import datetime
+from urllib3 import PoolManager
 
 # the secret configuration specific things
 if bool(os.environ.get("WEBHOOK", False)):
@@ -46,6 +47,18 @@ async def ddl_call_back(bot, update):
         "/" + str(update.from_user.id) + ".jpg"
     youtube_dl_url = update.message.reply_to_message.text
     custom_file_name = os.path.basename(youtube_dl_url)
+    url = youtube_dl_url
+    pool = PoolManager()
+    response = pool.request("GET", url, preload_content=False)
+    total_length = int(response.headers.get("Content-Length"))
+    file_size = Config.TG_MAX_FILE_SIZE + 1
+    if total_length > file_size:
+        await bot.edit_message_text(
+        chat_id=update.message.chat.id,
+        text=Translation.RCHD_TG_API_LIMIT.format(humanbytes(total_length)),
+        message_id=update.message.message_id
+        )
+        return
     if "|" in youtube_dl_url:
         url_parts = youtube_dl_url.split("|")
         if len(url_parts) == 2:
