@@ -38,7 +38,7 @@ async def generate_screen_shot(bot, update):
             revoke=True
         )
         return
-    TRChatBase(update.from_user.id, update.text, "generatescss")
+#    TRChatBase(update.from_user.id, update.text, "generatescss")
     if update.reply_to_message is not None:
         download_location = Config.DOWNLOAD_LOCATION + "/"
         a = await bot.send_message(

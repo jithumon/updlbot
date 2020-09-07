@@ -30,16 +30,18 @@ from hachoir.metadata import extractMetadata
 from hachoir.parser import createParser
 # https://stackoverflow.com/a/37631799/4723940
 from PIL import Image
-from database.database import *
+from helper_funcs.database import *
 
 @pyrogram.Client.on_message(pyrogram.Filters.command(["rename"]))
 async def rename_doc(bot, update):
     if update.from_user.id not in Config.AUTH_USERS:
-        await bot.delete_messages(
-            chat_id=update.chat.id,
-            message_ids=update.message_id,
-            revoke=True
-        )
+        await bot.send_message(
+        chat_id=update.chat.id,
+        text="You are not authorised to use this bot.",
+        parse_mode="html",
+        disable_web_page_preview=True,
+        reply_to_message_id=update.message_id
+    )
         return
 #    TRChatBase(update.from_user.id, update.text, "rename")
     if (" " in update.text) and (update.reply_to_message is not None):
@@ -88,11 +90,11 @@ async def rename_doc(bot, update):
 #                return
             new_file_name = download_location + file_name
             os.rename(the_real_download_location, new_file_name)
-            # await bot.edit_message_text(
-            #     text=Translation.UPLOAD_START,
-            #     chat_id=update.chat.id,
-            #     message_id=a.message_id
-            # )
+            await bot.edit_message_text(
+                 text=Translation.UPLOAD_START,
+                 chat_id=update.chat.id,
+                 message_id=a.message_id
+            )
             logger.info(the_real_download_location)
             thumb_image_path = Config.DOWNLOAD_LOCATION + "/" + str(update.from_user.id) + ".jpg"
             if not os.path.exists(thumb_image_path):

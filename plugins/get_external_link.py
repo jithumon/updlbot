@@ -39,7 +39,7 @@ async def get_link(bot, update):
             revoke=True
         )
         return
-    TRChatBase(update.from_user.id, update.text, "getlink")
+#    TRChatBase(update.from_user.id, update.text, "getlink")
     logger.info(update.from_user)
     if update.reply_to_message is not None:
         reply_message = update.reply_to_message
