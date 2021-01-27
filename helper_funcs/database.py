@@ -26,7 +26,7 @@ SESSION = start()
 INSERTION_LOCK = threading.RLock()
 
 class Thumbnail(BASE):
-    __tablename__ = "thumbnail"
+    __tablename__ = "reup_thumbnail"
     id = Column(Integer, primary_key=True)
     msg_id = Column(Integer)
     
