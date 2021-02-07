@@ -256,7 +256,7 @@ async def youtube_dl_call_back(bot, update):
                 await bot.send_audio(
                     chat_id=update.message.chat.id,
                     audio=download_directory,
-                    caption=description,
+                    caption=f"{str(response_json.get('title'))}",
                     parse_mode="HTML",
                     duration=duration,
                     # performer=response_json["uploader"],
@@ -276,7 +276,7 @@ async def youtube_dl_call_back(bot, update):
                     chat_id=update.message.chat.id,
                     document=download_directory,
                     thumb=thumb_image_path,
-                    caption=f"<b>{file_name}</b>",
+                    caption=f"{str(response_json.get('title'))}",
                     parse_mode="HTML",
                     # reply_markup=reply_markup,
                     reply_to_message_id=update.message.reply_to_message.message_id,
@@ -306,7 +306,7 @@ async def youtube_dl_call_back(bot, update):
                 await bot.send_video(
                     chat_id=update.message.chat.id,
                     video=download_directory,
-                    caption=f"<b>{file_name}</b>",
+                    caption=f"{str(response_json.get('title'))}",
                     parse_mode="HTML",
                     duration=duration,
                     width=width,
